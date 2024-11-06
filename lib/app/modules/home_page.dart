@@ -11,14 +11,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String displayText = '0';
-  String operator = '';
+  String operator = ''; //armazenar o operador a ser usado
   num? num1;
   num? num2;
-  List<String> historico = [];
+  List<String> historico = []; //lista do histórico de operações
 
   void onKeyPressed(String value) {
     setState(() {
       if (value == 'C') {
+        //limpar tudo
         displayText = '0';
         num1 = null;
         num2 = null;
@@ -34,26 +35,32 @@ class _HomePageState extends State<HomePage> {
           value == '-' ||
           value == '*' ||
           value == '/' ||
-          value == 'x' ||
-          value == '%') {
-        num1 ??= num.tryParse(displayText);
+          value == 'x') {
+        num1 ??= Math.parseInput(displayText);
         operator = value;
-        displayText += value;
+        displayText =
+            num1.toString() + operator; //exibe o operador após o primeiro valor
+      } else if (value == '%') {
+        //calculo de porcentagem
+        if (num1 != null && operator.isNotEmpty) {
+          num2 = Math.parseInput(displayText.split(operator).last);
+          num2 = Math.calculate(num1!, num2!, '%');
+          displayText = '$num1 $operator $num2';
+        }
       } else if (value == '=') {
         if (num1 != null && operator.isNotEmpty) {
-          num2 = num.tryParse(displayText.split(operator).last);
+          num2 = Math.parseInput(
+              displayText.split(operator).last); //obtem o segundo valor
           if (num2 != null) {
             final result = Math.calculate(num1!, num2!, operator);
-            historico.add('$num1 $operator $num2 = $result');
+            historico.add(
+                '$num1 $operator $num2 = $result'); //add ao histórico após mostrar o resultado
             displayText = result.toString();
-            num1 = result;
+            num1 = null;
             num2 = null;
             operator = '';
+            displayText = '0'; //limpa o display após mostrar o resultado
           }
-          num1 = null;
-          num2 = null;
-          operator = '';
-          displayText = '0';
         }
       } else {
         if (displayText == '0' && value != ',') {
@@ -86,6 +93,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+//divisor entre a tela de resultados e o teclado
 class Divisor extends StatelessWidget {
   const Divisor({super.key});
 
@@ -101,6 +109,7 @@ class Divisor extends StatelessWidget {
   }
 }
 
+//teclado virtual
 class Keyboard extends StatelessWidget {
   final void Function(String) onKeyPressed;
 
@@ -173,6 +182,7 @@ class Keyboard extends StatelessWidget {
 }
 
 class KeyButton extends StatelessWidget {
+  //captura o valor do botão pressionado
   final String text;
   final void Function(String) onKeyPressed;
 
