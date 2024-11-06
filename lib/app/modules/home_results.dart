@@ -11,7 +11,7 @@ class HomeResults extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ResultOperetion(displayText: displayText),
+        ResultOperation(displayText: displayText),
         const SizedBox(height: 16),
         Expanded(
           child: GridHistory(historico: historico),
@@ -21,10 +21,11 @@ class HomeResults extends StatelessWidget {
   }
 }
 
-class ResultOperetion extends StatelessWidget {
+//mostrar o resultado
+class ResultOperation extends StatelessWidget {
   final String displayText;
 
-  const ResultOperetion({super.key, required this.displayText});
+  const ResultOperation({super.key, required this.displayText});
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +33,14 @@ class ResultOperetion extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
       alignment: Alignment.centerRight,
       child: Text(
-        displayText,
+        displayText.replaceAll('.', ','),
         style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
       ),
     );
   }
 }
 
+//histórico com gridview
 class GridHistory extends StatelessWidget {
   final List<String> historico;
 
@@ -64,7 +66,7 @@ class GridHistory extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: Text(
-                  historico[index],
+                  historico[index].replaceAll('.', ','),
                   style: const TextStyle(fontSize: 16),
                   textAlign: TextAlign.center,
                 ),
