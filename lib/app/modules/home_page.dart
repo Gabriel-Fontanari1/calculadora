@@ -59,7 +59,6 @@ class _HomePageState extends State<HomePage> {
             num1 = null;
             num2 = null;
             operator = '';
-            displayText = '0'; //limpa o display após mostrar o resultado
           }
         }
       } else {
